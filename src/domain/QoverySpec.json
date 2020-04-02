@@ -1,0 +1,195 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "title": "The Root Schema",
+  "required": [
+    "application"
+  ],
+  "properties": {
+    "application": {
+      "$id": "#/properties/application",
+      "type": "object",
+      "title": "The Application Schema",
+      "required": [
+        "name",
+        "project",
+        "cloud_region",
+        "publicly_accessible",
+        "dockerfile"
+      ],
+      "properties": {
+        "name": {
+          "$id": "#/properties/application/properties/name",
+          "type": "string"
+        },
+        "project": {
+          "$id": "#/properties/application/properties/project",
+          "type": "string"
+        },
+        "cloud_region": {
+          "$id": "#/properties/application/properties/cloud_region",
+          "type": "string",
+          "enum": [
+            "aws/us-east-2",
+            "aws/us-east-1",
+            "aws/us-west-1",
+            "aws/us-west-2",
+            "aws/ap-east-1",
+            "aws/ap-south-1",
+            "aws/ap-northeast-3",
+            "aws/ap-northeast-2",
+            "aws/ap-southeast-1",
+            "aws/ap-southeast-2",
+            "aws/ap-northeast-1",
+            "aws/ca-central-1",
+            "aws/cn-north-1",
+            "aws/cn-northwest-1",
+            "aws/eu-central-1",
+            "aws/eu-west-1",
+            "aws/eu-west-2",
+            "aws/eu-west-3",
+            "aws/eu-north-1",
+            "aws/me-south-1",
+            "aws/sa-east-1",
+            "aws/us-gov-east-1",
+            "aws/us-gov-west-1"
+          ]
+        },
+        "publicly_accessible": {
+          "$id": "#/properties/application/properties/publicly_accessible",
+          "type": "boolean",
+          "default": true
+        },
+        "dockerfile": {
+          "$id": "#/properties/application/properties/dockerfile",
+          "type": "string"
+        }
+      }
+    },
+    "databases": {
+      "$id": "#/properties/databases",
+      "type": "array",
+      "title": "The Databases Schema",
+      "items": {
+        "$id": "#/properties/databases/items",
+        "type": "object",
+        "title": "The Items Schema",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#/properties/databases/items/properties/name",
+            "type": "string"
+          },
+          "type": {
+            "$id": "#/properties/databases/items/properties/type",
+            "type": "string",
+            "enum": [
+              "postgresql",
+              "mongodb",
+              "mysql"
+            ]
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "postgresql"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "version": {
+                  "$id": "#/properties/databases/items/properties/version",
+                  "type": "string",
+                  "enum": [
+                    "9.4",
+                    "9.5",
+                    "9.6",
+                    "10",
+                    "11"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "mysql"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "version": {
+                  "$id": "#/properties/databases/items/properties/version",
+                  "type": "string",
+                  "enum": [
+                    "5.5",
+                    "5.6",
+                    "5.7",
+                    "8.0"
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "routers": {
+      "$id": "#/properties/routers",
+      "type": "array",
+      "title": "The Routers Schema",
+      "items": {
+        "$id": "#/properties/routers/items",
+        "type": "object",
+        "required": [
+          "name",
+          "dns",
+          "routes"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#/properties/routers/items/properties/name",
+            "type": "string"
+          },
+          "dns": {
+            "$id": "#/properties/routers/items/properties/dns",
+            "type": "string"
+          },
+          "routes": {
+            "$id": "#/properties/routers/items/properties/routes",
+            "type": "array",
+            "items": {
+              "$id": "#/properties/routers/items/properties/routes/items",
+              "type": "object",
+              "properties": {
+                "application_name": {
+                  "$id": "#/properties/routers/items/properties/routes/items/properties/application_name",
+                  "type": "string"
+                },
+                "paths": {
+                  "$id": "#/properties/routers/items/properties/routes/items/properties/paths",
+                  "type": "array",
+                  "items": {
+                    "$id": "#/properties/routers/items/properties/routes/items/properties/paths/items",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
