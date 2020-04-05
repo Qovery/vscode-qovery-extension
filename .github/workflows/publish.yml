@@ -23,6 +23,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: echo bonjour
+    - name: Vscode release plugin
+      uses: JCofman/vscodeaction@master
       env:
-        CI: true
+        PUBLISHER_TOKEN: ${{ secrets.PUBLISHER_TOKEN }}
+      with:
+        args: publish -p $PUBLISHER_TOKEN
