@@ -1,6 +1,8 @@
 # Qovery Extension
 Qovery Extension makes it easy to edit Qovery yaml specification files inside vscode.
 
+Available directly on the Marketplace: https://marketplace.visualstudio.com/items?itemName=qovery.vscode-qovery-extension
+
 ## Demo 
 ![Demo of the plugin](.github/ext-demo.gif)
 
