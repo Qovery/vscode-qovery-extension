@@ -2,7 +2,7 @@
 	"name": "vscode-qovery-extension",
 	"displayName": "Qovery",
 	"description": "Extension to help you easily edit Qovery specification files.",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"publisher": "qovery",
 	"repository": "https://github.com/Qovery/vscode-qovery-extension",
 	"engines": {
