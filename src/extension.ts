@@ -10,22 +10,28 @@ const QOVERY_FILE_PATTERN = '*.qovery.y*ml'
 const SCHEMA_FILE = Uri.file(join(__dirname, `/domain/QoverySpec.json`)).toString()
 
 export const activate = async () => {
-  await addQoverySchemaToConfig()
-  await activateYamlExtension()
+  const mayExtension = getYamlExtension()
+
+  if (mayExtension !== undefined) {
+    await addQoverySchemaToConfig()
+    await activateYamlExtension(mayExtension)
+  }
 }
 
 export const deactivate = () => {}
 
-const activateYamlExtension = async () => {
+const getYamlExtension = () : Extension<any> | undefined => {
   const ext: Extension<any> | undefined = extensions.getExtension(VSCODE_YAML_EXTENSION_ID)
   if (!ext) {
     window.showWarningMessage('Please install \'YAML Support by Red Hat\' via the Extensions pane.')
-    return
+    return undefined
   }
 
-  const yamlPlugin = await ext.activate()
+  return ext
+}
 
-  console.log(yamlPlugin)
+const activateYamlExtension = async (ext: Extension<any>) => {
+  const yamlPlugin = await ext.activate()
 
   if (!yamlPlugin) {
     window.showWarningMessage(' Please upgrade \'YAML Support by Red Hat\' via the Extensions pane.')
