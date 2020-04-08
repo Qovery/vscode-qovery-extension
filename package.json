@@ -3,6 +3,8 @@
 	"displayName": "Qovery",
 	"description": "Extension to help you easily edit Qovery specification files.",
 	"version": "0.1.0",
+	"publisher": "qovery",
+	"repository": "https://github.com/Qovery/vscode-qovery-extension",
 	"engines": {
 		"vscode": "^1.25.0"
 	},
@@ -12,7 +14,7 @@
 		"qovery"
 	],
 	"categories": [
-		"Integration"
+		"Other"
 	],
 	"activationEvents": [
 		"workspaceContains:*.qovery.y*ml"
@@ -30,7 +32,7 @@
 		"@types/glob": "^7.1.1",
 		"@types/mocha": "^7.0.1",
 		"@types/node": "^12.11.7",
-		"@types/vscode": "^1.43.0",
+		"@types/vscode": "^1.25.0",
 		"eslint": "^6.8.0",
 		"@typescript-eslint/parser": "^2.18.0",
 		"@typescript-eslint/eslint-plugin": "^2.18.0",
