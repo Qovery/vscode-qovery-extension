@@ -15,8 +15,7 @@
         "name",
         "project",
         "cloud_region",
-        "publicly_accessible",
-        "dockerfile"
+        "publicly_accessible"
       ],
       "properties": {
         "name": {
@@ -64,6 +63,29 @@
         "dockerfile": {
           "$id": "#/properties/application/properties/dockerfile",
           "type": "string"
+        },
+        "cpu": {
+          "$id": "#/properties/application/properties/cpu",
+          "type": [
+            "string",
+            "integer"
+          ],
+          "pattern": "\\d+(m?$)",
+          "description": "Accepted values are Integer and Millis CPU (e.g: 2, 250m)"
+        },
+        "ram": {
+          "$id": "#/properties/application/properties/ram",
+          "type": "string",
+          "pattern": "\\d+(MB|GB)$",
+          "description": "Accepted values are MB (mega bytes) and GB (giga bytes) (e.g: 2GB, 250MB)",
+          "default": "512MB"
+        },
+        "dependencies": {
+          "cpu": {
+            "required": [
+              "#/properties/application/properties/ram"
+            ]
+          }
         }
       }
     },
@@ -109,11 +131,10 @@
                   "$id": "#/properties/databases/items/properties/version",
                   "type": "string",
                   "enum": [
-                    "9.4",
-                    "9.5",
-                    "9.6",
+                    "9",
                     "10",
-                    "11"
+                    "11",
+                    "12"
                   ]
                 }
               }
@@ -141,8 +162,71 @@
                 }
               }
             }
+          },
+          {
+            "if": {
+              "properties": {
+                "type": {
+                  "const": "mongodb"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "version": {
+                  "$id": "#/properties/databases/items/properties/version",
+                  "type": "string",
+                  "enum": [
+                    "3.6",
+                    "4.0",
+                    "4.2",
+                    "4.4"
+                  ]
+                }
+              }
+            }
           }
         ]
+      }
+    },
+    "storage": {
+      "$id": "#/properties/storage",
+      "type": "array",
+      "items": {
+        "$id": "#/properties/storage",
+        "type": "object",
+        "required": [
+          "name",
+          "type",
+          "size",
+          "mount_point"
+        ],
+        "properties": {
+          "name": {
+            "$id": "#/properties/storage/items/properties/name",
+            "type": "string"
+          },
+          "mount_point": {
+            "$id": "#/properties/storage/items/properties/mount_point",
+            "type": "string"
+          },
+          "size": {
+            "$id": "#/properties/storage/items/properties/size",
+            "type": "string",
+            "pattern": "\\d+(GB|TB)$",
+            "description": "Size in GB, and TB (e.g: 1GB, 12TB)"
+          },
+          "type": {
+            "$id": "#/properties/storage/items/properties/type",
+            "type": "string",
+            "enum": [
+              "slow_hdd",
+              "hdd",
+              "sdd",
+              "fast_sdd"
+            ]
+          }
+        }
       }
     },
     "routers": {
@@ -154,7 +238,6 @@
         "type": "object",
         "required": [
           "name",
-          "dns",
           "routes"
         ],
         "properties": {
@@ -162,9 +245,27 @@
             "$id": "#/properties/routers/items/properties/name",
             "type": "string"
           },
-          "dns": {
-            "$id": "#/properties/routers/items/properties/dns",
-            "type": "string"
+          "custom_domains": {
+            "$id": "#/properties/routers/items/properties/custom_domains",
+            "type": "array",
+            "items": {
+              "$id": "#/properties/routers/items/properties/custom_domains/items",
+              "type": "object",
+              "required": [
+                "domain",
+                "branch"
+              ],
+              "properties": {
+                "branch": {
+                  "$id": "#/properties/routers/items/custom_domains/items/properties/branch",
+                  "type": "string"
+                },
+                "domain": {
+                  "$id": "#/properties/routers/items/custom_domains/items/properties/domain",
+                  "type": "string"
+                }
+              }
+            }
           },
           "routes": {
             "$id": "#/properties/routers/items/properties/routes",
